@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nakshatra Pardeshi - Personal Webpage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,9 +65,6 @@
             margin-top: 20px;
             border-top: #333 3px solid;
         }
-        footer p {
-            margin: 0;
-        }
         .ticker-box {
             position: fixed;
             top: 50%;
@@ -90,6 +88,12 @@
         }
         .ticker-box .crypto {
             font-weight: bold;
+        }
+        .contact-icons a {
+            color: #333;
+            text-decoration: none;
+            margin-right: 10px;
+            font-size: 1.5em;
         }
     </style>
     <script>
@@ -122,7 +126,7 @@
                 <ul>
                     <li><a href="#about">About</a></li>
                     <li><a href="#education">Education</a></li>
-                    <li><a href="#medium">Medium</a></li>
+                    <li><a href="#Blog">Medium</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
@@ -137,9 +141,9 @@
     <section id="education" class="container">
         <h2>Education & Qualifications</h2>
         <h3>Warwick Business School</h3>
-        <p>MSc in Business with Operations Management </p>
+        <p>MSc in Business with Operations Management</p>
         <h3>Amity University</h3>
-        <p>BTech in Aeronautical Engineering </p>
+        <p>BTech in Aeronautical Engineering</p>
     </section>
 
     <section id="medium" class="container">
@@ -150,19 +154,21 @@
 
     <section id="contact" class="container">
         <h2>Contact</h2>
-        <p>Email: <a href="mailto:nakshatrapardeshi@gmail.com">nakshatrapardeshi@gmail.com</a></p>
-        <p>LinkedIn: <a href="https://www.linkedin.com/in/nakshatrapardeshi/" target="_blank">linkedin.com/in/nakshatrapardeshi</a></p>
-        <p>Instagram: <a href="https://www.instagram.com/nakshatrapardeshi?igsh=MmpuczIxOGpvZHYz&utm_source=qr" target="_blank">Instagram/nakshatrapardeshi</a></p>
-        <p>YouTube: <a href="https://youtube.com/@nakshatrapardeshi?si=_8FkcPrBAo-V4BdG" target="_blank">Youtube/nakshatrapardeshi</a><p>
-        <p>Phone: +44 07407 761837</p>
+        <div class="contact-icons">
+            <a href="mailto:nakshatrapardeshi@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.linkedin.com/in/nakshatrapardeshi/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.instagram.com/nakshatrapardeshi?igsh=MmpuczIxOGpvZHYz&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://youtube.com/@nakshatrapardeshi?si=_8FkcPrBAo-V4BdG" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="tel:+4407407761837"><i class="fas fa-phone"></i></a>
+        </div>
     </section>
 
     <footer>
         <p>&copy; 2024 Nakshatra Pardeshi. All Rights Reserved.</p>
     </footer>
     <div class="ticker-box">
-        <span class="crypto">Bitcoin: <span id="btc-price">Loading...</span></span>
-        <span class="crypto">Ethereum: <span id="eth-price">Loading...</span></span>
+        <span class="crypto"><i class="fab fa-bitcoin"></i> Bitcoin: <span id="btc-price">Loading...</span></span>
+        <span class="crypto"><i class="fab fa-ethereum"></i> Ethereum: <span id="eth-price">Loading...</span></span>
     </div>
 </body>
 </html>
