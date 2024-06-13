@@ -117,6 +117,17 @@
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
+        .photography {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .photography img {
+            width: 100%;
+            max-width: 150px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
     <script>
         async function fetchCryptoPrices() {
@@ -180,6 +191,11 @@
 
     <section id="portfolio" class="container">
         <h2>Photography Portfolio</h2>
+        <div class="photography">
+            <img src="images/a (64).jpg" alt="Photography Portfolio">
+            <img src="images/BTC - Nakshatra.jpg" alt="Photography Portfolio">
+            <!-- Add more images as needed -->
+        </div>
         <p><a href="portfolio.html" class="button-3d">View my full portfolio</a></p>
     </section>
 
