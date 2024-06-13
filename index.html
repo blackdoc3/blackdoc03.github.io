@@ -12,7 +12,6 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
-            cursor: url('BTC - Nakshatra.jpg'), auto; /* Custom cursor */
         }
         .container {
             width: 80%;
@@ -118,58 +117,7 @@
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
-        #canvas-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1;
-        }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        // Function to create a 3D cube
-        function create3DCube() {
-            // Create the scene
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-            // Create the renderer
-            const renderer = new THREE.WebGLRenderer();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-            // Create the geometry and material for the cube
-            const geometry = new THREE.BoxGeometry();
-            const material = new THREE.MeshBasicMaterial({ color: 0x007bff, wireframe: true });
-            const cube = new THREE.Mesh(geometry, material);
-            scene.add(cube);
-
-            camera.position.z = 5;
-
-            // Add mouse move event listener to rotate the cube
-            document.addEventListener('mousemove', (event) => {
-                const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-                const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-                cube.rotation.x = mouseY * Math.PI;
-                cube.rotation.y = mouseX * Math.PI;
-            });
-
-            // Animate the cube
-            const animate = function () {
-                requestAnimationFrame(animate);
-                renderer.render(scene, camera);
-            };
-
-            animate();
-        }
-
-        window.onload = function() {
-            updatePrices();
-            create3DCube();
-        };
-    </script>
     <script>
         async function fetchCryptoPrices() {
             try {
@@ -187,14 +135,10 @@
             setInterval(fetchCryptoPrices, 60000); // Update every 60 seconds
         }
 
-        window.onload = function() {
-            updatePrices();
-            create3DCube();
-        };
+        window.onload = updatePrices;
     </script>
 </head>
 <body>
-    <div id="canvas-container"></div>
     <header>
         <div class="container">
             <div id="branding">
