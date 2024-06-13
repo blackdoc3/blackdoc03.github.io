@@ -104,15 +104,34 @@
 
     <section id="portfolio" class="container">
         <h2>Photography Portfolio</h2>
-        <div class="photography">
-            <img src="images/nakshatra pardeshi portfolio (206).jpg" alt="Photography Portfolio">
-            <img src="images/nakshatra pardeshi portfolio (223).jpg" alt="Photography Portfolio">
-            <!-- Add more images as needed -->
+        <div class="photography" id="photo-gallery">
+            <!-- Images will be dynamically loaded here -->
         </div>
     </section>
 
     <footer>
         <p>&copy; 2024 Nakshatra Pardeshi. All Rights Reserved.</p>
     </footer>
+
+    <script>
+        async function loadImages() {
+            try {
+                const response = await fetch('images.json'); // Adjust the path if your JSON is in a different location
+                const images = await response.json();
+                const gallery = document.getElementById('photo-gallery');
+
+                images.forEach(filename => {
+                    const img = document.createElement('img');
+                    img.src = `images/${filename}`;
+                    img.alt = 'Photography Portfolio';
+                    gallery.appendChild(img);
+                });
+            } catch (error) {
+                console.error('Error loading images:', error);
+            }
+        }
+
+        window.onload = loadImages;
+    </script>
 </body>
 </html>
