@@ -85,7 +85,7 @@
 <body>
     <div class="instructions">
         <h2>Instructions</h2>
-        <p>Use the left and right arrow keys to move the basket and catch the falling crypto coins.</p>
+        <p>Use the left and right arrow keys to move the basket and catch the falling crypto coins. On mobile, swipe left or right to move the basket.</p>
     </div>
     <div class="score">Score: <span id="score">0</span></div>
     <div class="timer">Time Left: <span id="timer">60</span>s</div>
@@ -117,6 +117,29 @@
                     basket.style.left = basketPosition + 'px';
                 }
             });
+
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            gameContainer.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            gameContainer.addEventListener('touchmove', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                if (touchEndX < touchStartX && basketPosition > 0) {
+                    basketPosition -= basketSpeed;
+                    basket.style.left = basketPosition + 'px';
+                }
+                if (touchEndX > touchStartX && basketPosition < (gameContainer.clientWidth - basket.clientWidth)) {
+                    basketPosition += basketSpeed;
+                    basket.style.left = basketPosition + 'px';
+                }
+            }
 
             function createCoin() {
                 const coin = document.createElement('div');
