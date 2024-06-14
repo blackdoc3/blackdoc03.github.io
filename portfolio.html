@@ -48,6 +48,8 @@
                     const img = document.createElement('img');
                     img.src = `images/${filename}`;
                     img.alt = 'Photography Portfolio';
+                    img.style.maxWidth = '30%'; // Adjust this value as needed
+                    img.style.height = 'auto'; // Maintain aspect ratio
                     gallery.appendChild(img);
                 });
             } catch (error) {
