@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Match</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(8, 50px);
+            grid-template-rows: repeat(8, 50px);
+            gap: 5px;
+        }
+
+        .coin {
+            width: 50px;
+            height: 50px;
+            background-size: cover;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-board" id="gameBoard"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const gameBoard = document.getElementById('gameBoard');
+            const coinTypes = ['bitcoin', 'ethereum', 'litecoin'];
+            const boardSize = 8;
+            let board = [];
+            let selectedCoin = null;
+
+            // Initialize the board
+            function initBoard() {
+                for (let i = 0; i < boardSize * boardSize; i++) {
+                    const coin = document.createElement('div');
+                    coin.classList.add('coin');
+                    coin.classList.add(randomCoin());
+                    gameBoard.appendChild(coin);
+                    board.push(coin);
+                }
+            }
+
+            function randomCoin() {
+                return coinTypes[Math.floor(Math.random() * coinTypes.length)];
+            }
+
+            function swapCoins(coin1, coin2) {
+                const tempClass = coin1.className;
+                coin1.className = coin2.className;
+                coin2.className = tempClass;
+            }
+
+            function checkMatch() {
+                // Check for horizontal and vertical matches
+                // Simple implementation for demonstration purposes
+            }
+
+            gameBoard.addEventListener('click', (e) => {
+                if (selectedCoin) {
+                    swapCoins(selectedCoin, e.target);
+                    checkMatch();
+                    selectedCoin = null;
+                } else {
+                    selectedCoin = e.target;
+                }
+            });
+
+            initBoard();
+        });
+    </script>
+</body>
+</html>
