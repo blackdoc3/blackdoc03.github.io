@@ -10,11 +10,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
             background-color: #f0f0f0;
             margin: 0;
             font-family: Arial, sans-serif;
-            flex-direction: column;
         }
         .instructions {
             max-width: 600px;
@@ -34,6 +34,7 @@
             border: 2px solid #000;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px; /* Added margin-bottom */
         }
         .basket {
             position: absolute;
@@ -80,6 +81,11 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        .spacer {
+            height: 20px;
+            background-color: #000;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -92,6 +98,7 @@
     <div class="game-container" id="gameContainer">
         <div class="basket" id="basket"></div>
     </div>
+    <div class="spacer"></div>
     <div class="game-over" id="gameOver">Game Over! Your score is <span id="finalScore">0</span>. Redirecting to the game selection page in 20 seconds...</div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
