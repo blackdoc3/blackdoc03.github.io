@@ -6,13 +6,8 @@
     <title>Select a Game</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
     <style>
-        body {
-            background-color: #f0f8ff;
-            font-family: Arial, sans-serif;
-        }
-
         .game-selection-container {
-            max-width: 600px;
+            max-width: 500px;
             margin: 50px auto;
             padding: 20px;
             text-align: center;
@@ -20,75 +15,26 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
         .game-selection-container h2 {
             margin-bottom: 20px;
-            font-size: 2em;
-            color: #333;
         }
-
         .game-selection-container button {
-            padding: 15px 25px;
+            padding: 10px 20px;
             margin: 10px;
             background: linear-gradient(135deg, #6e8efb, #a777e3);
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .game-selection-container button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        header {
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
-
-        header nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        header nav ul li {
-            margin: 0 15px;
-        }
-
-        header nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.2em;
-        }
-
-        footer {
-            background: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
         }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Select a Game</h1>
+            <div id="branding">
+                <h1>Select a Game</h1>
+            </div>
             <nav>
                 <ul>
                     <li><a href="index.html">Home</a></li>
@@ -104,7 +50,7 @@
         <button onclick="location.href='game2.html'">Rock, Paper, Scissors</button>
         <button onclick="location.href='game3.html'">Tic-Tac-Toe</button>
         <button onclick="location.href='game4.html'">Crypto Catcher</button>
-        <button onclick="location.href='game5.html'">Crypto Match</button>
+        <button onclick="location.href='game5.html'">Bike Ride</button>
     </div>
 
     <footer>
