@@ -51,6 +51,8 @@
             width: 30px;
             height: 30px;
             background-size: cover;
+            background-color: #e74c3c;
+            border-radius: 50%;
         }
         .score, .timer {
             margin-bottom: 10px;
@@ -99,7 +101,6 @@
             const timerDisplay = document.getElementById('timer');
             const gameOverDisplay = document.getElementById('gameOver');
             const finalScoreDisplay = document.getElementById('finalScore');
-            const obstacleTypes = ['obstacle1', 'obstacle2', 'obstacle3'];
             const bikeSpeed = 10;
             let bikePosition = 375;
             let score = 0;
@@ -142,15 +143,11 @@
 
             function createObstacle() {
                 const obstacle = document.createElement('div');
-                obstacle.classList.add('obstacle', randomObstacle());
+                obstacle.classList.add('obstacle');
                 obstacle.style.top = '0px';
                 obstacle.style.left = Math.floor(Math.random() * (gameContainer.clientWidth - 30)) + 'px';
                 gameContainer.appendChild(obstacle);
                 moveObstacle(obstacle);
-            }
-
-            function randomObstacle() {
-                return obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
             }
 
             function moveObstacle(obstacle) {
