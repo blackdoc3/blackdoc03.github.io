@@ -99,7 +99,7 @@
         <div class="basket" id="basket"></div>
     </div>
     <div class="spacer"></div>
-    <div class="game-over" id="gameOver">Game Over! Your score is <span id="finalScore">0</span>.</div>
+    <div class="game-over" id="gameOver">Game Over! Your score is <span id="finalScore">0</span>. Redirecting to the game selection page in 10 seconds...</div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const gameContainer = document.getElementById('gameContainer');
@@ -114,6 +114,7 @@
             let score = 0;
             let gameTime = 60; // Game time in seconds
             let gameInterval;
+            let coinIntervals = [];
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft' && basketPosition > 0) {
@@ -172,6 +173,7 @@
                         checkCollision(coin, coinInterval);
                     }
                 }, 50);
+                coinIntervals.push(coinInterval);
             }
 
             function checkCollision(coin, coinInterval) {
@@ -207,12 +209,14 @@
             }
 
             function endGame() {
+                // Stop all coin movements
+                coinIntervals.forEach(interval => clearInterval(interval));
                 gameOverDisplay.style.display = 'block';
                 finalScoreDisplay.textContent = score;
-                console.log('Game Over! Redirecting in 20 seconds...');
+                console.log('Game Over! ');
                 setTimeout(() => {
                     window.location.href = 'games.html';
-                }, 20000); // Redirect after 20 seconds
+                }, 10000); // Redirect after 10 seconds
             }
 
             startGame();
