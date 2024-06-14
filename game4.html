@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Catcher Game</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        .game-container {
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            height: 500px;
+        }
+        .game-board {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #f4f4f4, #fff);
+        }
+        .basket {
+            position: absolute;
+            bottom: 20px;
+            width: 80px;
+            height: 40px;
+            background: #ff9900;
+            border-radius: 5px;
+        }
+        .coin {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: url('images/bitcoin.png') no-repeat center center;
+            background-size: cover;
+        }
+        .score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1>Crypto Catcher Game</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="games.html">Games</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="game-container">
+        <h2>Crypto Catcher</h2>
+        <div class="game-board" id="board">
+            <div class="basket" id="basket"></div>
+            <div class="score" id="score">Score: 0</div>
+        </div>
+    </div>
+
+    <script>
+        const board = document.getElementById('board');
+        const basket = document.getElementById('basket');
+        const scoreDisplay = document.getElementById('score');
+        let score = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            let boardRect = board.getBoundingClientRect();
+            let x = e.clientX - boardRect.left;
+            if (x >= 0 && x <= boardRect.width - basket.offsetWidth) {
+                basket.style.left = `${x}px`;
+            }
+        });
+
+        function createCoin() {
+            const coin = document.createElement('div');
+            coin.className = 'coin';
+            coin.style.left = `${Math.random() * (board.offsetWidth - 30)}px`;
+            coin.style.top = '0px';
+            board.appendChild(coin);
+
+            let coinInterval = setInterval(() => {
+                let coinTop = parseInt(window.getComputedStyle(coin).getPropertyValue('top'));
+                if (coinTop < board.offsetHeight - basket.offsetHeight) {
+                    coin.style.top = `${coinTop + 5}px`;
+                } else {
+                    clearInterval(coinInterval);
+                    board.removeChild(coin);
+                }
+
+                let coinRect = coin.getBoundingClientRect();
+                let basketRect = basket.getBoundingClientRect();
+
+                if (coinRect.bottom > basketRect.top &&
+                    coinRect.right > basketRect.left &&
+                    coinRect.left < basketRect.right) {
+                    clearInterval(coinInterval);
+                    board.removeChild(coin);
+                    score++;
+                    scoreDisplay.textContent = `Score: ${score}`;
+                }
+            }, 50);
+        }
+
+        setInterval(createCoin, 1000);
+    </script>
+</body>
+</html>
