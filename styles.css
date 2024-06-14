@@ -52,6 +52,8 @@ section {
 }
 section h2 {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
 }
 footer {
     background: linear-gradient(135deg, #6e8efb, #a777e3);
@@ -109,14 +111,15 @@ footer {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-.photography {
-    display: flex;
-    flex-wrap: wrap;
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
 }
-.photography img {
-    margin: 10px;
+.grid-item {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 30%;
-    height: auto;
 }
