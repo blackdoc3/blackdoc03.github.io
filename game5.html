@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Match</title>
+    <title>Bike Ride</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
     <style>
         body {
@@ -16,248 +16,91 @@
             font-family: Arial, sans-serif;
             flex-direction: column;
         }
-
-        .instructions {
-            max-width: 600px;
-            margin-bottom: 20px;
-            text-align: left; /* Changed to left alignment */
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .game-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            background-color: #444;
+            overflow: hidden;
+            border: 2px solid #000;
         }
-
-        .game-board {
-            display: grid;
-            grid-template-columns: repeat(8, 50px);
-            grid-template-rows: repeat(8, 50px);
-            gap: 5px;
+        .bike {
+            position: absolute;
+            bottom: 10px;
+            left: 375px;
+            width: 50px;
+            height: 100px;
+            background-image: url('images/bike.png'); /* Make sure you have a bike image */
+            background-size: cover;
         }
-
-        .coin {
+        .obstacle {
+            position: absolute;
             width: 50px;
             height: 50px;
-            background-size: cover;
-            cursor: pointer;
-        }
-
-        .bitcoin {
-            background-image: url('images/bitcoin.png');
-        }
-
-        .ethereum {
-            background-image: url('images/ethereum.png');
-        }
-
-        .litecoin {
-            background-image: url('images/litecoin.png');
-        }
-
-        .score, .timer {
-            margin-bottom: 10px;
-            background: #fff;
-            padding: 10px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-size: 1.2em;
-        }
-
-        .game-over {
-            display: none;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            background-color: red;
         }
     </style>
 </head>
 <body>
     <div class="instructions">
         <h2>Instructions</h2>
-        <p>Welcome to Crypto Match! Your goal is to match three or more identical crypto coins to clear them from the board and earn points.</p>
-        <p>How to Play:</p>
-        <ol>
-            <li>Click on a coin to select it.</li>
-            <li>Click on an adjacent coin to swap them.</li>
-            <li>If the swap results in a match of three or more coins, they will be cleared from the board.</li>
-            <li>New coins will fall from the top to fill the empty spaces, potentially creating new matches.</li>
-        </ol>
-        <p>Try to achieve the highest score possible within the given time limit. Good luck!</p>
+        <p>Use the left and right arrow keys to move the bike and avoid obstacles.</p>
     </div>
-    <div class="score">Score: <span id="score">0</span></div>
-    <div class="timer">Time Left: <span id="timer">60</span>s</div>
-    <div class="game-board" id="gameBoard"></div>
-    <div class="game-over" id="gameOver">Game Over! Your score is <span id="finalScore">0</span>.</div>
+    <div class="game-container" id="gameContainer">
+        <div class="bike" id="bike"></div>
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const gameBoard = document.getElementById('gameBoard');
-            const scoreDisplay = document.getElementById('score');
-            const timerDisplay = document.getElementById('timer');
-            const gameOverDisplay = document.getElementById('gameOver');
-            const finalScoreDisplay = document.getElementById('finalScore');
-            const coinTypes = ['bitcoin', 'ethereum', 'litecoin'];
-            const boardSize = 8;
-            let board = [];
-            let score = 0;
-            let selectedCoin = null;
-            let gameTime = 60; // Game time in seconds
-            let gameInterval;
+            const gameContainer = document.getElementById('gameContainer');
+            const bike = document.getElementById('bike');
+            const bikeSpeed = 10;
+            let bikePosition = 375;
 
-            // Initialize the board
-            function initBoard() {
-                for (let i = 0; i < boardSize * boardSize; i++) {
-                    const coin = document.createElement('div');
-                    coin.classList.add('coin');
-                    coin.classList.add(randomCoin());
-                    gameBoard.appendChild(coin);
-                    board.push(coin);
-                }
-                checkMatch(); // Initial match check to clear starting matches
-            }
-
-            function randomCoin() {
-                return coinTypes[Math.floor(Math.random() * coinTypes.length)];
-            }
-
-            function swapCoins(coin1, coin2) {
-                const tempClass = coin1.className;
-                coin1.className = coin2.className;
-                coin2.className = tempClass;
-            }
-
-            function getCoin(row, col) {
-                return board[row * boardSize + col];
-            }
-
-            function getCoinClass(coin) {
-                return coin.className.split(' ')[1];
-            }
-
-            function checkMatch() {
-                let matches = [];
-                
-                // Check horizontal matches
-                for (let row = 0; row < boardSize; row++) {
-                    for (let col = 0; col < boardSize - 2; col++) {
-                        let coin1 = getCoin(row, col);
-                        let coin2 = getCoin(row, col + 1);
-                        let coin3 = getCoin(row, col + 2);
-                        if (getCoinClass(coin1) === getCoinClass(coin2) && getCoinClass(coin2) === getCoinClass(coin3)) {
-                            matches.push(coin1, coin2, coin3);
-                        }
-                    }
-                }
-
-                // Check vertical matches
-                for (let col = 0; col < boardSize; col++) {
-                    for (let row = 0; row < boardSize - 2; row++) {
-                        let coin1 = getCoin(row, col);
-                        let coin2 = getCoin(row + 1, col);
-                        let coin3 = getCoin(row + 2, col);
-                        if (getCoinClass(coin1) === getCoinClass(coin2) && getCoinClass(coin2) === getCoinClass(coin3)) {
-                            matches.push(coin1, coin2, coin3);
-                        }
-                    }
-                }
-
-                // Remove matches
-                if (matches.length > 0) {
-                    matches.forEach(coin => {
-                        coin.className = 'coin';
-                        score += 10; // Increment score for each matched coin
-                    });
-                    scoreDisplay.textContent = score;
-                    setTimeout(cascadeCoins, 500); // Cascade coins after removing matches
-                }
-            }
-
-            function cascadeCoins() {
-                for (let col = 0; col < boardSize; col++) {
-                    let emptySlots = 0;
-                    for (let row = boardSize - 1; row >= 0; row--) {
-                        let coin = getCoin(row, col);
-                        if (getCoinClass(coin) === 'coin') {
-                            emptySlots++;
-                        } else if (emptySlots > 0) {
-                            swapCoins(coin, getCoin(row + emptySlots, col));
-                        }
-                    }
-
-                    for (let row = 0; row < emptySlots; row++) {
-                        let newCoin = getCoin(row, col);
-                        newCoin.classList.add(randomCoin());
-                    }
-                }
-
-                checkMatch();
-            }
-
-            gameBoard.addEventListener('click', (e) => {
-                if (selectedCoin) {
-                    let currentCoin = e.target;
-                    let selectedRow = Math.floor(board.indexOf(selectedCoin) / boardSize);
-                    let selectedCol = board.indexOf(selectedCoin) % boardSize;
-                    let currentRow = Math.floor(board.indexOf(currentCoin) / boardSize);
-                    let currentCol = board.indexOf(currentCoin) % boardSize;
-
-                    if ((Math.abs(selectedRow - currentRow) === 1 && selectedCol === currentCol) || 
-                        (Math.abs(selectedCol - currentCol) === 1 && selectedRow === currentRow)) {
-                        swapCoins(selectedCoin, currentCoin);
-                        checkMatch();
-                    }
-
-                    selectedCoin = null;
-                } else {
-                    selectedCoin = e.target;
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && bikePosition > 0) {
+                    bikePosition -= bikeSpeed;
+                    bike.style.left = bikePosition + 'px';
+                } else if (e.key === 'ArrowRight' && bikePosition < (gameContainer.clientWidth - bike.clientWidth)) {
+                    bikePosition += bikeSpeed;
+                    bike.style.left = bikePosition + 'px';
                 }
             });
 
-            function startGame() {
-                initBoard();
-                gameInterval = setInterval(() => {
-                    gameTime--;
-                    timerDisplay.textContent = gameTime;
-                    if (gameTime <= 0) {
-                        clearInterval(gameInterval);
-                        endGame();
-                    }
-                }, 1000);
+            function createObstacle() {
+                const obstacle = document.createElement('div');
+                obstacle.classList.add('obstacle');
+                obstacle.style.top = '0px';
+                obstacle.style.left = Math.floor(Math.random() * (gameContainer.clientWidth - 50)) + 'px';
+                gameContainer.appendChild(obstacle);
+                moveObstacle(obstacle);
             }
 
-            function endGame() {
-                gameOverDisplay.style.display = 'block';
-                finalScoreDisplay.textContent = score;
-                gameBoard.removeEventListener('click', handleClick);
+            function moveObstacle(obstacle) {
+                let obstacleInterval = setInterval(() => {
+                    let obstacleTop = parseInt(obstacle.style.top);
+                    if (obstacleTop > gameContainer.clientHeight) {
+                        clearInterval(obstacleInterval);
+                        gameContainer.removeChild(obstacle);
+                    } else {
+                        obstacle.style.top = obstacleTop + 5 + 'px';
+                        checkCollision(obstacle);
+                    }
+                }, 50);
             }
 
-            function handleClick(e) {
-                if (selectedCoin) {
-                    let currentCoin = e.target;
-                    let selectedRow = Math.floor(board.indexOf(selectedCoin) / boardSize);
-                    let selectedCol = board.indexOf(selectedCoin) % boardSize;
-                    let currentRow = Math.floor(board.indexOf(currentCoin) / boardSize);
-                    let currentCol = board.indexOf(currentCoin) % boardSize;
-
-                    if ((Math.abs(selectedRow - currentRow) === 1 && selectedCol === currentCol) || 
-                        (Math.abs(selectedCol - currentCol) === 1 && selectedRow === currentRow)) {
-                        swapCoins(selectedCoin, currentCoin);
-                        checkMatch();
-                    }
-
-                    selectedCoin = null;
-                } else {
-                    selectedCoin = e.target;
+            function checkCollision(obstacle) {
+                const bikeRect = bike.getBoundingClientRect();
+                const obstacleRect = obstacle.getBoundingClientRect();
+                if (!(bikeRect.right < obstacleRect.left ||
+                      bikeRect.left > obstacleRect.right ||
+                      bikeRect.bottom < obstacleRect.top ||
+                      bikeRect.top > obstacleRect.bottom)) {
+                    alert('Game Over!');
+                    window.location.reload();
                 }
             }
 
-            gameBoard.addEventListener('click', handleClick);
-
-            startGame();
+            setInterval(createObstacle, 2000); // Create new obstacle every 2 seconds
         });
     </script>
 </body>
