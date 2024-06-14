@@ -1,0 +1,122 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+header {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: #fff;
+    padding-top: 30px;
+    min-height: 70px;
+    border-bottom: #333 3px solid;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+header a {
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+header ul {
+    padding: 0;
+    list-style: none;
+}
+header li {
+    float: left;
+    display: inline;
+    padding: 0 20px 0 20px;
+}
+header #branding {
+    float: left;
+}
+header #branding h1 {
+    margin: 0;
+}
+header nav {
+    float: right;
+    margin-top: 10px;
+}
+section {
+    padding: 20px;
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+section h2 {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+footer {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    border-top: #333 3px solid;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+}
+.ticker-box {
+    position: fixed;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    font-size: 1em;
+    color: #fff;
+    text-align: center;
+    z-index: 1000;
+    width: 200px;
+}
+.ticker-box span {
+    display: block;
+    margin: 10px 0;
+}
+.ticker-box .crypto {
+    font-weight: bold;
+}
+.contact-icons a {
+    color: #333;
+    text-decoration: none;
+    margin-right: 10px;
+    font-size: 1.5em;
+    transition: transform 0.3s;
+}
+.contact-icons a:hover {
+    transform: translateY(-5px);
+}
+.button-3d {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.button-3d:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.photography {
+    display: flex;
+    flex-wrap: wrap;
+}
+.photography img {
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 30%;
+    height: auto;
+}
