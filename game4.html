@@ -3,152 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Catcher Game</title>
+    <title>Crypto Catcher</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
     <style>
-        .game-container {
-            max-width: 800px;
-            margin: 50px auto;
-            text-align: center;
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+        }
+        .instructions {
+            max-width: 600px;
+            margin-bottom: 20px;
+            text-align: left; /* Changed to left alignment */
             background: #fff;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            position: relative;
-            height: 600px; /* Adjusted height to accommodate instructions and timer */
         }
-        .game-board {
+        .game-container {
             position: relative;
-            width: 100%;
-            height: 500px; /* Adjusted height to leave space for timer and instructions */
-            background: linear-gradient(to bottom, #f4f4f4, #fff);
-            cursor: none; /* Hide the default cursor */
+            width: 800px;
+            height: 600px;
+            background-color: #444;
+            overflow: hidden;
+            border: 2px solid #000;
         }
         .basket {
             position: absolute;
-            bottom: 20px;
-            width: 80px;
-            height: 40px;
-            background: #ff9900;
-            border-radius: 5px;
-            pointer-events: none; /* Allow clicks to pass through */
+            bottom: 10px;
+            left: 375px;
+            width: 100px;
+            height: 50px;
+            background-color: #f39c12;
+            background-size: cover;
+            background-image: url('images/basket.png'); /* Make sure you have a basket image */
         }
         .coin {
             position: absolute;
             width: 30px;
             height: 30px;
-            background: url('images/bitcoin.png') no-repeat center center;
             background-size: cover;
         }
+        .bitcoin {
+            background-image: url('images/bitcoin.png');
+        }
+        .ethereum {
+            background-image: url('images/ethereum.png');
+        }
+        .litecoin {
+            background-image: url('images/litecoin.png');
+        }
         .score, .timer {
-            position: absolute;
-            top: 10px;
-            font-size: 1.5em;
+            margin-bottom: 10px;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1.2em;
         }
-        .score {
-            left: 10px;
-        }
-        .timer {
-            right: 10px;
-        }
-        .instructions {
+        .game-over {
+            display: none;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
             padding: 20px;
-            text-align: left;
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div id="branding">
-                <h1>Crypto Catcher Game</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="games.html">Games</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <div class="game-container">
-        <div class="instructions">
-            <h2>Instructions:</h2>
-            <p>Move the basket left and right using your mouse to catch the falling bitcoins. Each bitcoin you catch will increase your score by 1. You have 60 seconds to catch as many bitcoins as possible. Good luck!</p>
-        </div>
-        <div class="game-board" id="board">
-            <div class="basket" id="basket"></div>
-            <div class="score" id="score">Score: 0</div>
-            <div class="timer" id="timer">Time: 60s</div>
-        </div>
+    <div class="instructions">
+        <h2>Instructions</h2>
+        <p>Use the left and right arrow keys to move the basket and catch the falling crypto coins.</p>
     </div>
-
+    <div class="score">Score: <span id="score">0</span></div>
+    <div class="timer">Time Left: <span id="timer">60</span>s</div>
+    <div class="game-container" id="gameContainer">
+        <div class="basket" id="basket"></div>
+    </div>
+    <div class="game-over" id="gameOver">Game Over! Your score is <span id="finalScore">0</span>.</div>
     <script>
-        const board = document.getElementById('board');
-        const basket = document.getElementById('basket');
-        const scoreDisplay = document.getElementById('score');
-        const timerDisplay = document.getElementById('timer');
-        let score = 0;
-        let timeLeft = 60;
-        let gameActive = true;
+        document.addEventListener("DOMContentLoaded", () => {
+            const gameContainer = document.getElementById('gameContainer');
+            const basket = document.getElementById('basket');
+            const scoreDisplay = document.getElementById('score');
+            const timerDisplay = document.getElementById('timer');
+            const gameOverDisplay = document.getElementById('gameOver');
+            const finalScoreDisplay = document.getElementById('finalScore');
+            const coinTypes = ['bitcoin', 'ethereum', 'litecoin'];
+            const basketSpeed = 10;
+            let basketPosition = 375;
+            let score = 0;
+            let gameTime = 60; // Game time in seconds
+            let gameInterval;
 
-        document.addEventListener('mousemove', (e) => {
-            if (gameActive) {
-                let boardRect = board.getBoundingClientRect();
-                let x = e.clientX - boardRect.left - (basket.offsetWidth / 2);
-                if (x >= 0 && x <= boardRect.width - basket.offsetWidth) {
-                    basket.style.left = `${x}px`;
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && basketPosition > 0) {
+                    basketPosition -= basketSpeed;
+                    basket.style.left = basketPosition + 'px';
+                } else if (e.key === 'ArrowRight' && basketPosition < (gameContainer.clientWidth - basket.clientWidth)) {
+                    basketPosition += basketSpeed;
+                    basket.style.left = basketPosition + 'px';
+                }
+            });
+
+            function createCoin() {
+                const coin = document.createElement('div');
+                coin.classList.add('coin', randomCoin());
+                coin.style.top = '0px';
+                coin.style.left = Math.floor(Math.random() * (gameContainer.clientWidth - 30)) + 'px';
+                gameContainer.appendChild(coin);
+                moveCoin(coin);
+            }
+
+            function randomCoin() {
+                return coinTypes[Math.floor(Math.random() * coinTypes.length)];
+            }
+
+            function moveCoin(coin) {
+                let coinInterval = setInterval(() => {
+                    let coinTop = parseInt(coin.style.top);
+                    if (coinTop > gameContainer.clientHeight) {
+                        clearInterval(coinInterval);
+                        gameContainer.removeChild(coin);
+                    } else {
+                        coin.style.top = coinTop + 5 + 'px';
+                        checkCollision(coin, coinInterval);
+                    }
+                }, 50);
+            }
+
+            function checkCollision(coin, coinInterval) {
+                const basketRect = basket.getBoundingClientRect();
+                const coinRect = coin.getBoundingClientRect();
+                if (!(basketRect.right < coinRect.left ||
+                      basketRect.left > coinRect.right ||
+                      basketRect.bottom < coinRect.top ||
+                      basketRect.top > coinRect.bottom)) {
+                    clearInterval(coinInterval);
+                    gameContainer.removeChild(coin);
+                    score += 10;
+                    scoreDisplay.textContent = score;
                 }
             }
+
+            function startGame() {
+                gameInterval = setInterval(() => {
+                    gameTime--;
+                    timerDisplay.textContent = gameTime;
+                    if (gameTime <= 0) {
+                        clearInterval(gameInterval);
+                        endGame();
+                    }
+                }, 1000);
+                setInterval(createCoin, 2000); // Create new coin every 2 seconds
+            }
+
+            function endGame() {
+                gameOverDisplay.style.display = 'block';
+                finalScoreDisplay.textContent = score;
+                gameContainer.removeEventListener('keydown', handleKeydown);
+            }
+
+            startGame();
         });
-
-        function createCoin() {
-            if (!gameActive) return;
-            const coin = document.createElement('div');
-            coin.className = 'coin';
-            coin.style.left = `${Math.random() * (board.offsetWidth - 30)}px`;
-            coin.style.top = '0px';
-            board.appendChild(coin);
-
-            let coinInterval = setInterval(() => {
-                let coinTop = parseInt(window.getComputedStyle(coin).getPropertyValue('top'));
-                if (coinTop < board.offsetHeight - basket.offsetHeight) {
-                    coin.style.top = `${coinTop + 5}px`;
-                } else {
-                    clearInterval(coinInterval);
-                    board.removeChild(coin);
-                }
-
-                let coinRect = coin.getBoundingClientRect();
-                let basketRect = basket.getBoundingClientRect();
-
-                if (coinRect.bottom > basketRect.top &&
-                    coinRect.right > basketRect.left &&
-                    coinRect.left < basketRect.right) {
-                    clearInterval(coinInterval);
-                    board.removeChild(coin);
-                    score++;
-                    scoreDisplay.textContent = `Score: ${score}`;
-                }
-            }, 50);
-        }
-
-        function startTimer() {
-            let timerInterval = setInterval(() => {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    timerDisplay.textContent = `Time: ${timeLeft}s`;
-                } else {
-                    clearInterval(timerInterval);
-                    gameActive = false;
-                    alert(`Time's up! Your final score is ${score}`);
-                }
-            }, 1000);
-        }
-
-        startTimer();
-        setInterval(createCoin, 1000);
     </script>
 </body>
 </html>
