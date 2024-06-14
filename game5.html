@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bike Ride</title>
+    <title>Bike Game</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
             background-color: #f0f0f0;
             margin: 0;
             font-family: Arial, sans-serif;
-            flex-direction: column;
         }
         .instructions {
             max-width: 600px;
             margin-bottom: 20px;
-            text-align: left; /* Changed to left alignment */
+            text-align: left;
             background: #fff;
             padding: 20px;
             border-radius: 10px;
@@ -29,41 +29,83 @@
             position: relative;
             width: 800px;
             height: 600px;
-            background-color: #444;
+            background-color: #fff;
             overflow: hidden;
             border: 2px solid #000;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
         }
         .bike {
             position: absolute;
             bottom: 10px;
             left: 375px;
-            width: 50px;
+            width: 100px;
             height: 100px;
-            background-image: url('images/bike.png'); /* Make sure you have a bike image */
+            background-color: #f39c12;
             background-size: cover;
+            background-image: url('images/bike.png'); /* Make sure you have a bike image */
         }
         .obstacle {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: red;
+            width: 30px;
+            height: 30px;
+            background-size: cover;
+        }
+        .score, .timer {
+            margin-bottom: 10px;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1.2em;
+        }
+        .game-over {
+            display: none;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .spacer {
+            height: 20px;
+            background-color: #000;
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <div class="instructions">
         <h2>Instructions</h2>
-        <p>Use the left and right arrow keys to move the bike and avoid obstacles.</p>
+        <p>Use the left and right arrow keys to move the bike and avoid obstacles. On mobile, swipe left or right to move the bike.</p>
     </div>
+    <div class="score">Score: <span id="score">0</span></div>
+    <div class="timer">Time Left: <span id="timer">60</span>s</div>
     <div class="game-container" id="gameContainer">
         <div class="bike" id="bike"></div>
     </div>
+    <div class="spacer"></div>
+    <div class="game-over" id="gameOver">Game Over! Your score is <span id="finalScore">0</span>. Redirecting to the game selection page in 10 seconds...</div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const gameContainer = document.getElementById('gameContainer');
             const bike = document.getElementById('bike');
+            const scoreDisplay = document.getElementById('score');
+            const timerDisplay = document.getElementById('timer');
+            const gameOverDisplay = document.getElementById('gameOver');
+            const finalScoreDisplay = document.getElementById('finalScore');
+            const obstacleTypes = ['obstacle1', 'obstacle2', 'obstacle3'];
             const bikeSpeed = 10;
             let bikePosition = 375;
+            let score = 0;
+            let gameTime = 60; // Game time in seconds
+            let gameInterval;
+            let obstacleIntervals = [];
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft' && bikePosition > 0) {
@@ -75,13 +117,40 @@
                 }
             });
 
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            gameContainer.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            gameContainer.addEventListener('touchmove', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                if (touchEndX < touchStartX && bikePosition > 0) {
+                    bikePosition -= bikeSpeed;
+                    bike.style.left = bikePosition + 'px';
+                }
+                if (touchEndX > touchStartX && bikePosition < (gameContainer.clientWidth - bike.clientWidth)) {
+                    bikePosition += bikeSpeed;
+                    bike.style.left = bikePosition + 'px';
+                }
+            }
+
             function createObstacle() {
                 const obstacle = document.createElement('div');
-                obstacle.classList.add('obstacle');
+                obstacle.classList.add('obstacle', randomObstacle());
                 obstacle.style.top = '0px';
-                obstacle.style.left = Math.floor(Math.random() * (gameContainer.clientWidth - 50)) + 'px';
+                obstacle.style.left = Math.floor(Math.random() * (gameContainer.clientWidth - 30)) + 'px';
                 gameContainer.appendChild(obstacle);
                 moveObstacle(obstacle);
+            }
+
+            function randomObstacle() {
+                return obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
             }
 
             function moveObstacle(obstacle) {
@@ -92,24 +161,261 @@
                         gameContainer.removeChild(obstacle);
                     } else {
                         obstacle.style.top = obstacleTop + 5 + 'px';
-                        checkCollision(obstacle);
+                        checkCollision(obstacle, obstacleInterval);
                     }
                 }, 50);
+                obstacleIntervals.push(obstacleInterval);
             }
 
-            function checkCollision(obstacle) {
+            function checkCollision(obstacle, obstacleInterval) {
                 const bikeRect = bike.getBoundingClientRect();
                 const obstacleRect = obstacle.getBoundingClientRect();
                 if (!(bikeRect.right < obstacleRect.left ||
                       bikeRect.left > obstacleRect.right ||
                       bikeRect.bottom < obstacleRect.top ||
                       bikeRect.top > obstacleRect.bottom)) {
-                    alert('Game Over!');
-                    window.location.reload();
+                    clearInterval(obstacleInterval);
+                    gameContainer.removeChild(obstacle);
+                    score += 10; // Update score logic as needed
+                    scoreDisplay.textContent = score;
                 }
             }
 
-            setInterval(createObstacle, 2000); // Create new obstacle every 2 seconds
+            function startGame() {
+                gameInterval = setInterval(() => {
+                    gameTime--;
+                    timerDisplay.textContent = gameTime;
+                    if (gameTime <= 0) {
+                        clearInterval(gameInterval);
+                        endGame();
+                    }
+                }, 1000);
+                setInterval(createObstacle, 2000); // Create new obstacle every 2 seconds
+            }
+
+            function endGame() {
+                // Stop all obstacle movements
+                obstacleIntervals.forEach(interval => clearInterval(interval));
+                gameOverDisplay.style.display = 'block';
+                finalScoreDisplay.textContent = score;
+                console.log('Game Over! Redirecting in 10 seconds...');
+                setTimeout(() => {
+                    window.location.href = 'games.html';
+                }, 10000); // Redirect after 10 seconds
+            }
+
+            startGame();
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Game</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .instructions {
+            max-width: 600px;
+            margin-bottom: 20px;
+            text-align: left;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .game-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            background-color: #fff;
+            overflow: hidden;
+            border: 2px solid #000;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        .bike {
+            position: absolute;
+            bottom: 10px;
+            left: 375px;
+            width: 100px;
+            height: 100px;
+            background-color: #f39c12;
+            background-size: cover;
+            background-image: url('images/bike.png'); /* Make sure you have a bike image */
+        }
+        .obstacle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-size: cover;
+        }
+        .score, .timer {
+            margin-bottom: 10px;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1.2em;
+        }
+        .game-over {
+            display: none;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .spacer {
+            height: 20px;
+            background-color: #000;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="instructions">
+        <h2>Instructions</h2>
+        <p>Use the left and right arrow keys to move the bike and avoid obstacles. On mobile, swipe left or right to move the bike.</p>
+    </div>
+    <div class="score">Score: <span id="score">0</span></div>
+    <div class="timer">Time Left: <span id="timer">60</span>s</div>
+    <div class="game-container" id="gameContainer">
+        <div class="bike" id="bike"></div>
+    </div>
+    <div class="spacer"></div>
+    <div class="game-over" id="gameOver">Game Over! Your score is <span id="finalScore">0</span>. Redirecting to the game selection page in 10 seconds...</div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const gameContainer = document.getElementById('gameContainer');
+            const bike = document.getElementById('bike');
+            const scoreDisplay = document.getElementById('score');
+            const timerDisplay = document.getElementById('timer');
+            const gameOverDisplay = document.getElementById('gameOver');
+            const finalScoreDisplay = document.getElementById('finalScore');
+            const obstacleTypes = ['obstacle1', 'obstacle2', 'obstacle3'];
+            const bikeSpeed = 10;
+            let bikePosition = 375;
+            let score = 0;
+            let gameTime = 60; // Game time in seconds
+            let gameInterval;
+            let obstacleIntervals = [];
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && bikePosition > 0) {
+                    bikePosition -= bikeSpeed;
+                    bike.style.left = bikePosition + 'px';
+                } else if (e.key === 'ArrowRight' && bikePosition < (gameContainer.clientWidth - bike.clientWidth)) {
+                    bikePosition += bikeSpeed;
+                    bike.style.left = bikePosition + 'px';
+                }
+            });
+
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            gameContainer.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            gameContainer.addEventListener('touchmove', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                if (touchEndX < touchStartX && bikePosition > 0) {
+                    bikePosition -= bikeSpeed;
+                    bike.style.left = bikePosition + 'px';
+                }
+                if (touchEndX > touchStartX && bikePosition < (gameContainer.clientWidth - bike.clientWidth)) {
+                    bikePosition += bikeSpeed;
+                    bike.style.left = bikePosition + 'px';
+                }
+            }
+
+            function createObstacle() {
+                const obstacle = document.createElement('div');
+                obstacle.classList.add('obstacle', randomObstacle());
+                obstacle.style.top = '0px';
+                obstacle.style.left = Math.floor(Math.random() * (gameContainer.clientWidth - 30)) + 'px';
+                gameContainer.appendChild(obstacle);
+                moveObstacle(obstacle);
+            }
+
+            function randomObstacle() {
+                return obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
+            }
+
+            function moveObstacle(obstacle) {
+                let obstacleInterval = setInterval(() => {
+                    let obstacleTop = parseInt(obstacle.style.top);
+                    if (obstacleTop > gameContainer.clientHeight) {
+                        clearInterval(obstacleInterval);
+                        gameContainer.removeChild(obstacle);
+                    } else {
+                        obstacle.style.top = obstacleTop + 5 + 'px';
+                        checkCollision(obstacle, obstacleInterval);
+                    }
+                }, 50);
+                obstacleIntervals.push(obstacleInterval);
+            }
+
+            function checkCollision(obstacle, obstacleInterval) {
+                const bikeRect = bike.getBoundingClientRect();
+                const obstacleRect = obstacle.getBoundingClientRect();
+                if (!(bikeRect.right < obstacleRect.left ||
+                      bikeRect.left > obstacleRect.right ||
+                      bikeRect.bottom < obstacleRect.top ||
+                      bikeRect.top > obstacleRect.bottom)) {
+                    clearInterval(obstacleInterval);
+                    gameContainer.removeChild(obstacle);
+                    score += 10; // Update score logic as needed
+                    scoreDisplay.textContent = score;
+                }
+            }
+
+            function startGame() {
+                gameInterval = setInterval(() => {
+                    gameTime--;
+                    timerDisplay.textContent = gameTime;
+                    if (gameTime <= 0) {
+                        clearInterval(gameInterval);
+                        endGame();
+                    }
+                }, 1000);
+                setInterval(createObstacle, 2000); // Create new obstacle every 2 seconds
+            }
+
+            function endGame() {
+                // Stop all obstacle movements
+                obstacleIntervals.forEach(interval => clearInterval(interval));
+                gameOverDisplay.style.display = 'block';
+                finalScoreDisplay.textContent = score;
+                console.log('Game Over! Redirecting in 10 seconds...');
+                setTimeout(() => {
+                    window.location.href = 'games.html';
+                }, 10000); // Redirect after 10 seconds
+            }
+
+            startGame();
         });
     </script>
 </body>
