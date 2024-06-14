@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number Game</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        .game-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .game-container h2 {
+            margin-bottom: 20px;
+        }
+        .game-container input {
+            padding: 10px;
+            width: 80%;
+            margin: 10px 0;
+        }
+        .game-container button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .game-container p {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1>Guess the Number Game</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="games.html">Games</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="game-container">
+        <h2>Guess the Number!</h2>
+        <p>I'm thinking of a number between 1 and 100.</p>
+        <input type="number" id="guess" placeholder="Enter your guess" />
+        <button onclick="checkGuess()">Submit Guess</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        const randomNumber = Math.floor(Math.random() * 100) + 1;
+
+        function checkGuess() {
+            const userGuess = document.getElementById('guess').value;
+            const result = document.getElementById('result');
+
+            if (userGuess == randomNumber) {
+                result.textContent = 'Congratulations! You guessed the right number.';
+                result.style.color = 'green';
+            } else if (userGuess > randomNumber) {
+                result.textContent = 'Too high! Try again.';
+                result.style.color = 'red';
+            } else if (userGuess < randomNumber) {
+                result.textContent = 'Too low! Try again.';
+                result.style.color = 'red';
+            } else {
+                result.textContent = 'Please enter a valid number.';
+                result.style.color = 'red';
+            }
+        }
+    </script>
+</body>
+</html>
