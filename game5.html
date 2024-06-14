@@ -20,7 +20,7 @@
         .instructions {
             max-width: 600px;
             margin-bottom: 20px;
-            text-align: center;
+            text-align: left; /* Changed to left alignment */
             background: #fff;
             padding: 20px;
             border-radius: 10px;
@@ -52,6 +52,15 @@
         .litecoin {
             background-image: url('images/litecoin.png');
         }
+
+        .score {
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <body>
@@ -67,13 +76,16 @@
         </ol>
         <p>Try to achieve the highest score possible within the given number of moves. Good luck!</p>
     </div>
+    <div class="score">Score: <span id="score">0</span></div>
     <div class="game-board" id="gameBoard"></div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const gameBoard = document.getElementById('gameBoard');
+            const scoreDisplay = document.getElementById('score');
             const coinTypes = ['bitcoin', 'ethereum', 'litecoin'];
             const boardSize = 8;
             let board = [];
+            let score = 0;
             let selectedCoin = null;
 
             // Initialize the board
@@ -85,6 +97,7 @@
                     gameBoard.appendChild(coin);
                     board.push(coin);
                 }
+                checkMatch(); // Initial match check to clear starting matches
             }
 
             function randomCoin() {
@@ -133,12 +146,14 @@
                 }
 
                 // Remove matches
-                matches.forEach(coin => {
-                    coin.className = 'coin';
-                });
-
-                // Cascade coins
-                setTimeout(cascadeCoins, 500);
+                if (matches.length > 0) {
+                    matches.forEach(coin => {
+                        coin.className = 'coin';
+                        score += 10; // Increment score for each matched coin
+                    });
+                    scoreDisplay.textContent = score;
+                    setTimeout(cascadeCoins, 500); // Cascade coins after removing matches
+                }
             }
 
             function cascadeCoins() {
