@@ -107,14 +107,17 @@
             let gameTime = 60; // Game time in seconds
             let gameInterval;
             let obstacleIntervals = [];
+            let gameEnded = false;
 
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowLeft' && bikePosition > 0) {
-                    bikePosition -= bikeSpeed;
-                    bike.style.left = bikePosition + 'px';
-                } else if (e.key === 'ArrowRight' && bikePosition < (gameContainer.clientWidth - bike.clientWidth)) {
-                    bikePosition += bikeSpeed;
-                    bike.style.left = bikePosition + 'px';
+                if (!gameEnded) {
+                    if (e.key === 'ArrowLeft' && bikePosition > 0) {
+                        bikePosition -= bikeSpeed;
+                        bike.style.left = bikePosition + 'px';
+                    } else if (e.key === 'ArrowRight' && bikePosition < (gameContainer.clientWidth - bike.clientWidth)) {
+                        bikePosition += bikeSpeed;
+                        bike.style.left = bikePosition + 'px';
+                    }
                 }
             });
 
@@ -126,8 +129,10 @@
             });
 
             gameContainer.addEventListener('touchmove', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
+                if (!gameEnded) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                }
             });
 
             function handleSwipe() {
@@ -142,20 +147,29 @@
             }
 
             function createObstacle() {
-                const obstacle = document.createElement('div');
-                obstacle.classList.add('obstacle');
-                obstacle.style.top = '0px';
-                obstacle.style.left = Math.floor(Math.random() * (gameContainer.clientWidth - 30)) + 'px';
-                gameContainer.appendChild(obstacle);
-                moveObstacle(obstacle);
+                if (!gameEnded) {
+                    const obstacle = document.createElement('div');
+                    obstacle.classList.add('obstacle');
+                    obstacle.style.top = '0px';
+                    obstacle.style.left = Math.floor(Math.random() * (gameContainer.clientWidth - 30)) + 'px';
+                    gameContainer.appendChild(obstacle);
+                    moveObstacle(obstacle);
+                }
             }
 
             function moveObstacle(obstacle) {
                 let obstacleInterval = setInterval(() => {
+                    if (gameEnded) {
+                        clearInterval(obstacleInterval);
+                        return;
+                    }
+
                     let obstacleTop = parseInt(obstacle.style.top);
                     if (obstacleTop > gameContainer.clientHeight) {
                         clearInterval(obstacleInterval);
                         gameContainer.removeChild(obstacle);
+                        score += 10; // Increase score if obstacle passes without collision
+                        scoreDisplay.textContent = score;
                     } else {
                         obstacle.style.top = obstacleTop + 5 + 'px';
                         checkCollision(obstacle, obstacleInterval);
@@ -173,25 +187,26 @@
                       bikeRect.top > obstacleRect.bottom)) {
                     clearInterval(obstacleInterval);
                     gameContainer.removeChild(obstacle);
-                    score += 10; // Update score logic as needed
-                    scoreDisplay.textContent = score;
+                    endGame();
                 }
             }
 
             function startGame() {
                 gameInterval = setInterval(() => {
-                    gameTime--;
-                    timerDisplay.textContent = gameTime;
-                    if (gameTime <= 0) {
-                        clearInterval(gameInterval);
-                        endGame();
+                    if (!gameEnded) {
+                        gameTime--;
+                        timerDisplay.textContent = gameTime;
+                        if (gameTime <= 0) {
+                            clearInterval(gameInterval);
+                            endGame();
+                        }
                     }
                 }, 1000);
                 setInterval(createObstacle, 2000); // Create new obstacle every 2 seconds
             }
 
             function endGame() {
-                // Stop all obstacle movements
+                gameEnded = true;
                 obstacleIntervals.forEach(interval => clearInterval(interval));
                 gameOverDisplay.style.display = 'block';
                 finalScoreDisplay.textContent = score;
