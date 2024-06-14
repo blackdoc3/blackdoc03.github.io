@@ -19,7 +19,7 @@
         .instructions {
             max-width: 600px;
             margin-bottom: 20px;
-            text-align: left; /* Changed to left alignment */
+            text-align: left;
             background: #fff;
             padding: 20px;
             border-radius: 10px;
@@ -29,12 +29,12 @@
             position: relative;
             width: 800px;
             height: 600px;
-            background-color: #fff; /* Changed to white */
+            background-color: #fff;
             overflow: hidden;
             border: 2px solid #000;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px; /* Added margin-bottom */
+            margin-bottom: 20px;
         }
         .basket {
             position: absolute;
@@ -209,7 +209,7 @@
             function endGame() {
                 gameOverDisplay.style.display = 'block';
                 finalScoreDisplay.textContent = score;
-                gameContainer.removeEventListener('keydown', handleKeydown);
+                console.log('Game Over! Redirecting in 20 seconds...');
                 setTimeout(() => {
                     window.location.href = 'games.html';
                 }, 20000); // Redirect after 20 seconds
