@@ -14,6 +14,17 @@
             background-color: #f0f0f0;
             margin: 0;
             font-family: Arial, sans-serif;
+            flex-direction: column;
+        }
+
+        .instructions {
+            max-width: 600px;
+            margin-bottom: 20px;
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .game-board {
@@ -44,6 +55,18 @@
     </style>
 </head>
 <body>
+    <div class="instructions">
+        <h2>Instructions</h2>
+        <p>Welcome to Crypto Match! Your goal is to match three or more identical crypto coins to clear them from the board and earn points.</p>
+        <p>How to Play:</p>
+        <ol>
+            <li>Click on a coin to select it.</li>
+            <li>Click on an adjacent coin to swap them.</li>
+            <li>If the swap results in a match of three or more coins, they will be cleared from the board.</li>
+            <li>New coins will fall from the top to fill the empty spaces, potentially creating new matches.</li>
+        </ol>
+        <p>Try to achieve the highest score possible within the given number of moves. Good luck!</p>
+    </div>
     <div class="game-board" id="gameBoard"></div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
