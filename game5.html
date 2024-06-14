@@ -54,12 +54,34 @@
         }
 
         .score {
+            margin-bottom: 10px;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1.2em;
+        }
+
+        .timer {
             margin-bottom: 20px;
             background: #fff;
             padding: 10px 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             font-size: 1.2em;
+        }
+
+        .game-over {
+            display: none;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
@@ -74,19 +96,26 @@
             <li>If the swap results in a match of three or more coins, they will be cleared from the board.</li>
             <li>New coins will fall from the top to fill the empty spaces, potentially creating new matches.</li>
         </ol>
-        <p>Try to achieve the highest score possible within the given number of moves. Good luck!</p>
+        <p>Try to achieve the highest score possible within the given time limit. Good luck!</p>
     </div>
     <div class="score">Score: <span id="score">0</span></div>
+    <div class="timer">Time Left: <span id="timer">60</span>s</div>
     <div class="game-board" id="gameBoard"></div>
+    <div class="game-over" id="gameOver">Game Over! Your score is <span id="finalScore">0</span>.</div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const gameBoard = document.getElementById('gameBoard');
             const scoreDisplay = document.getElementById('score');
+            const timerDisplay = document.getElementById('timer');
+            const gameOverDisplay = document.getElementById('gameOver');
+            const finalScoreDisplay = document.getElementById('finalScore');
             const coinTypes = ['bitcoin', 'ethereum', 'litecoin'];
             const boardSize = 8;
             let board = [];
             let score = 0;
             let selectedCoin = null;
+            let gameTime = 60; // Game time in seconds
+            let gameInterval;
 
             // Initialize the board
             function initBoard() {
@@ -197,7 +226,47 @@
                 }
             });
 
-            initBoard();
+            function startGame() {
+                initBoard();
+                gameInterval = setInterval(() => {
+                    gameTime--;
+                    timerDisplay.textContent = gameTime;
+                    if (gameTime <= 0) {
+                        clearInterval(gameInterval);
+                        endGame();
+                    }
+                }, 1000);
+            }
+
+            function endGame() {
+                gameOverDisplay.style.display = 'block';
+                finalScoreDisplay.textContent = score;
+                gameBoard.removeEventListener('click', handleClick);
+            }
+
+            function handleClick(e) {
+                if (selectedCoin) {
+                    let currentCoin = e.target;
+                    let selectedRow = Math.floor(board.indexOf(selectedCoin) / boardSize);
+                    let selectedCol = board.indexOf(selectedCoin) % boardSize;
+                    let currentRow = Math.floor(board.indexOf(currentCoin) / boardSize);
+                    let currentCol = board.indexOf(currentCoin) % boardSize;
+
+                    if ((Math.abs(selectedRow - currentRow) === 1 && selectedCol === currentCol) || 
+                        (Math.abs(selectedCol - currentCol) === 1 && selectedRow === currentRow)) {
+                        swapCoins(selectedCoin, currentCoin);
+                        checkMatch();
+                    }
+
+                    selectedCoin = null;
+                } else {
+                    selectedCoin = e.target;
+                }
+            }
+
+            gameBoard.addEventListener('click', handleClick);
+
+            startGame();
         });
     </script>
 </body>
