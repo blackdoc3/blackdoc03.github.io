@@ -153,7 +153,13 @@
                       basketRect.top > coinRect.bottom)) {
                     clearInterval(coinInterval);
                     gameContainer.removeChild(coin);
-                    score += 10;
+                    if (coin.classList.contains('bitcoin')) {
+                        score += 50;
+                    } else if (coin.classList.contains('ethereum')) {
+                        score += 20;
+                    } else if (coin.classList.contains('litecoin')) {
+                        score += 10;
+                    }
                     scoreDisplay.textContent = score;
                 }
             }
