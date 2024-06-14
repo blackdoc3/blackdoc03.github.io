@@ -190,7 +190,7 @@
                     let emptySlots = 0;
                     for (let row = boardSize - 1; row >= 0; row--) {
                         let coin = getCoin(row, col);
-                        if (getCoinClass(coin) === undefined) {
+                        if (getCoinClass(coin) === 'coin') {
                             emptySlots++;
                         } else if (emptySlots > 0) {
                             swapCoins(coin, getCoin(row + emptySlots, col));
