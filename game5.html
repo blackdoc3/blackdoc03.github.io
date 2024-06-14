@@ -97,15 +97,85 @@
                 coin2.className = tempClass;
             }
 
+            function getCoin(row, col) {
+                return board[row * boardSize + col];
+            }
+
+            function getCoinClass(coin) {
+                return coin.className.split(' ')[1];
+            }
+
             function checkMatch() {
-                // Check for horizontal and vertical matches
-                // Simple implementation for demonstration purposes
+                let matches = [];
+                
+                // Check horizontal matches
+                for (let row = 0; row < boardSize; row++) {
+                    for (let col = 0; col < boardSize - 2; col++) {
+                        let coin1 = getCoin(row, col);
+                        let coin2 = getCoin(row, col + 1);
+                        let coin3 = getCoin(row, col + 2);
+                        if (getCoinClass(coin1) === getCoinClass(coin2) && getCoinClass(coin2) === getCoinClass(coin3)) {
+                            matches.push(coin1, coin2, coin3);
+                        }
+                    }
+                }
+
+                // Check vertical matches
+                for (let col = 0; col < boardSize; col++) {
+                    for (let row = 0; row < boardSize - 2; row++) {
+                        let coin1 = getCoin(row, col);
+                        let coin2 = getCoin(row + 1, col);
+                        let coin3 = getCoin(row + 2, col);
+                        if (getCoinClass(coin1) === getCoinClass(coin2) && getCoinClass(coin2) === getCoinClass(coin3)) {
+                            matches.push(coin1, coin2, coin3);
+                        }
+                    }
+                }
+
+                // Remove matches
+                matches.forEach(coin => {
+                    coin.className = 'coin';
+                });
+
+                // Cascade coins
+                setTimeout(cascadeCoins, 500);
+            }
+
+            function cascadeCoins() {
+                for (let col = 0; col < boardSize; col++) {
+                    let emptySlots = 0;
+                    for (let row = boardSize - 1; row >= 0; row--) {
+                        let coin = getCoin(row, col);
+                        if (getCoinClass(coin) === undefined) {
+                            emptySlots++;
+                        } else if (emptySlots > 0) {
+                            swapCoins(coin, getCoin(row + emptySlots, col));
+                        }
+                    }
+
+                    for (let row = 0; row < emptySlots; row++) {
+                        let newCoin = getCoin(row, col);
+                        newCoin.classList.add(randomCoin());
+                    }
+                }
+
+                checkMatch();
             }
 
             gameBoard.addEventListener('click', (e) => {
                 if (selectedCoin) {
-                    swapCoins(selectedCoin, e.target);
-                    checkMatch();
+                    let currentCoin = e.target;
+                    let selectedRow = Math.floor(board.indexOf(selectedCoin) / boardSize);
+                    let selectedCol = board.indexOf(selectedCoin) % boardSize;
+                    let currentRow = Math.floor(board.indexOf(currentCoin) / boardSize);
+                    let currentCol = board.indexOf(currentCoin) % boardSize;
+
+                    if ((Math.abs(selectedRow - currentRow) === 1 && selectedCol === currentCol) || 
+                        (Math.abs(selectedCol - currentCol) === 1 && selectedRow === currentRow)) {
+                        swapCoins(selectedCoin, currentCoin);
+                        checkMatch();
+                    }
+
                     selectedCoin = null;
                 } else {
                     selectedCoin = e.target;
