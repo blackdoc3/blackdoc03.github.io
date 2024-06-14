@@ -28,7 +28,7 @@
 
     <section id="portfolio" class="container">
         <h2>Photography Portfolio</h2>
-        <div class="photography" id="photo-gallery">
+        <div class="grid-container" id="photo-gallery">
             <!-- Images will be dynamically loaded here -->
         </div>
     </section>
@@ -48,8 +48,7 @@
                     const img = document.createElement('img');
                     img.src = `images/${filename}`;
                     img.alt = 'Photography Portfolio';
-                    img.style.maxWidth = '30%'; // Adjust this value as needed
-                    img.style.height = 'auto'; // Maintain aspect ratio
+                    img.className = 'grid-item';
                     gallery.appendChild(img);
                 });
             } catch (error) {
