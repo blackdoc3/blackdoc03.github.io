@@ -22,6 +22,7 @@
             width: 100%;
             height: 500px; /* Adjusted height to leave space for timer and instructions */
             background: linear-gradient(to bottom, #f4f4f4, #fff);
+            cursor: none; /* Hide the default cursor */
         }
         .basket {
             position: absolute;
@@ -30,6 +31,7 @@
             height: 40px;
             background: #ff9900;
             border-radius: 5px;
+            pointer-events: none; /* Allow clicks to pass through */
         }
         .coin {
             position: absolute;
@@ -94,7 +96,7 @@
         document.addEventListener('mousemove', (e) => {
             if (gameActive) {
                 let boardRect = board.getBoundingClientRect();
-                let x = e.clientX - boardRect.left;
+                let x = e.clientX - boardRect.left - (basket.offsetWidth / 2);
                 if (x >= 0 && x <= boardRect.width - basket.offsetWidth) {
                     basket.style.left = `${x}px`;
                 }
