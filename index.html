@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
     <style>
-        .button-3d-nft {
+        .button-3d-games {
             display: inline-block;
             padding: 15px 30px;
             font-size: 20px;
@@ -20,11 +20,21 @@
             text-align: center;
             margin: 20px auto;
             cursor: pointer;
-            text-decoration: none;
         }
-        .button-3d-nft:hover {
+        .button-3d-games:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+        }
+        .games-button-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .photography img {
+            width: 20%; /* Reduce the size of the image */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
         }
         .nft-container {
             display: flex;
@@ -127,10 +137,6 @@
 
     <div class="games-button-container">
         <a href="games.html" class="button-3d-games">Play Games</a>
-    </div>
-
-    <div class="nft-button-container">
-        <a href="#nft" class="button-3d-nft">View My NFTs</a>
     </div>
 
     <footer>
