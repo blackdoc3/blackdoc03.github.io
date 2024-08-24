@@ -5,6 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solarb - Nakshatra Pardeshi</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your existing CSS file -->
+    <style>
+        /* Center alignment for all elements */
+        body, header, section, footer {
+            text-align: center;
+        }
+
+        /* Larger font sizes and element sizes */
+        h1, h2 {
+            font-size: 2.5em;
+        }
+
+        select, input[type="number"], button {
+            font-size: 1.5em;
+            padding: 10px;
+            margin: 15px 0;
+            width: 50%;
+            max-width: 300px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        button {
+            background-color: #ff6a00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ee0979;
+        }
+
+        label {
+            font-size: 1.5em;
+            margin-top: 20px;
+            display: block;
+        }
+
+        /* Center the result section */
+        #result {
+            margin-top: 30px;
+            font-size: 1.5em;
+        }
+
+        /* Adjust container for spacing */
+        .container {
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -25,40 +77,43 @@
         <h2>Solarb</h2>
         
         <!-- Dropdowns -->
-      <div>
-    <label for="number-list">Select first token:</label>
-    <select id="number-list">
-        <option value="USDT">USDT</option>
-        <option value="SOL">SOL</option>
-        <option value="LIKN">LIKN</option>
-        <option value="WIF">WIF</option>
-        <option value="GRT">GRT</option>
-        <option value="JUP">JUP</option>
-    </select>
-</div>
+        <div>
+            <label for="number-list">Select first token:</label>
+            <select id="number-list">
+                <option value="USDT">USDT</option>
+                <option value="SOL">SOL</option>
+                <option value="LIKN">LIKN</option>
+                <option value="WIF">WIF</option>
+                <option value="GRT">GRT</option>
+                <option value="JUP">JUP</option>
+            </select>
+        </div>
 
-<div>
-    <label for="letter-list">Select second token:</label>
-    <select id="letter-list">
-        <option value="USDT">USDT</option>
-        <option value="SOL">SOL</option>
-        <option value="LIKN">LIKN</option>
-        <option value="WIF">WIF</option>
-        <option value="GRT">GRT</option>
-        <option value="JUP">JUP</option>
-    </select>
-</div>
+        <div>
+            <label for="letter-list">Select second token:</label>
+            <select id="letter-list">
+                <option value="USDT">USDT</option>
+                <option value="SOL">SOL</option>
+                <option value="LIKN">LIKN</option>
+                <option value="WIF">WIF</option>
+                <option value="GRT">GRT</option>
+                <option value="JUP">JUP</option>
+            </select>
+        </div>
 
         <!-- Input for amount -->
         <div>
-            <label for="amount">Enter the amount:</label>
-            <input type="text" id="amount" placeholder="Enter amount">
+            <label for="amount">Enter the amount (0-100):</label>
+            <input type="number" id="amount" placeholder="Enter amount" min="0" max="100">
         </div>
 
         <!-- Submit button -->
         <div>
             <button type="submit" onclick="submitForm()">Submit</button>
         </div>
+
+        <!-- Result Display -->
+        <div id="result"></div>
     </section>
 
     <footer>
@@ -67,18 +122,18 @@
 
     <script>
         function submitForm() {
-    const number = document.getElementById('number-list').value;
-    const letter = document.getElementById('letter-list').value;
-    const amount = document.getElementById('amount').value;
-    
-    if (isNaN(amount) || amount <= 0) {
-        alert('Please enter a valid amount.');
-        return;
-    }
+            const number = document.getElementById('number-list').value;
+            const letter = document.getElementById('letter-list').value;
+            const amount = document.getElementById('amount').value;
 
-    alert(`You selected: First Token ${number}, Second Token ${letter}, Amount ${amount}`);
-    // Further logic for form submission can be added here
-}
+            if (amount === "" || isNaN(amount) || amount < 0 || amount > 100) {
+                alert('Please enter a valid amount between 0 and 100.');
+                return;
+            }
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<p>You selected: First Token ${number}, Second Token ${letter}, Amount ${amount}</p>`;
+        }
     </script>
 </body>
 </html>
