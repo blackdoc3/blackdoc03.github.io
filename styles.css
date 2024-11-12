@@ -49,7 +49,7 @@ header ul {
 header li {
     float: left;
     display: inline;
-    padding: 0 20px 0 20px;
+    padding: 0 20px;
 }
 
 header #branding {
@@ -179,7 +179,7 @@ footer {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
-    margin-bottom: 40px; /* Added more space below the grid */
+    margin-bottom: 40px;
 }
 
 .grid-item {
