@@ -3,74 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Personal Webpage</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file for styling -->
+    <title>Nakshatra Pardeshi - Personal Webpage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        .button-3d-games {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            text-align: center;
+            margin: 20px auto;
+            cursor: pointer;
+        }
+        .button-3d-games:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+        }
+        .games-button-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .nft-container, .medium-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .nft-item, .medium-item {
+            width: 200px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .nft-item img, .medium-item img {
+            width: 100%;
+            height: auto;
+        }
+        .nft-item:hover, .medium-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .nft-item a, .medium-item a {
+            display: block;
+            padding: 10px;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: #fff;
+            text-decoration: none;
+        }
+        .photography img {
+            width: 20%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <div class="sidebar">
-        <h1>Your Name</h1>
-        <button onclick="window.location.href='#contact'">Contact Me</button>
-        <ul>
-            <li><a href="#about">About Me</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
-            <li><a href="#skills">Skills</a></li>
-        </ul>
-        <div class="social-icons">
-            <a href="https://twitter.com"><img src="twitter-icon.png" alt="Twitter"></a>
-            <a href="https://linkedin.com"><img src="linkedin-icon.png" alt="LinkedIn"></a>
-            <a href="https://github.com"><img src="github-icon.png" alt="GitHub"></a>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1>Nakshatra Pardeshi</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#medium">Blogs</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="Solarb.html">Solarb</a></li> 
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
         </div>
+    </header>
+
+    <section id="about" class="container">
+        <h2>About Me</h2>
+        <p>Hello </p>
+        <p> Explore </p>
+    </section>
+
+    <section id="education" class="container">
+        <h2>Education</h2>
+        <div class="education-icons">
+            <h3><i class="fas fa-graduation-cap"></i> Warwick Business School</h3>
+            <p>MSc in Business with Operations Management</p>
+            <h3><i class="fas fa-university"></i> Amity University</h3>
+            <p>BTech in Aeronautical Engineering</p>
+        </div>
+    </section>
+
+    <section id="medium" class="container">
+        <h2>Medium - Blogs</h2>
+        <p>This is my Medium account where I explore cryptocurrency and blockchain. From Bitcoin halving to the core principles of blockchain, I delve into their transformative potential in revolutionizing economies. Discover insights into the origins of cryptocurrency and its impact post-2008 crisis. With a blend of detective work, writing, business, and engineering, I offer a unique perspective on reshaping transactions and economies. Join me on this journey of discovery!</p>
+        <div class="medium-container">
+            <div class="medium-item">
+                <img src="https://miro.medium.com/v2/resize:fit:786/format:webp/1*NIAtySIJEsww1ykTMPr5dw.png" alt="Nakshatra Pardeshi - Mining Pool and Rewards Blog">
+                <a href="https://medium.com/@nakshatrapardeshi/mining-pools-and-rewards-014a648cd4af" target="_blank">Read - Mining Pool and Rewards Blog</a>
+            </div>
+            <div class="medium-item">
+                <img src="https://miro.medium.com/v2/resize:fit:786/format:webp/1*hXjaMQf9YO8waR9ojzjhhw.png" alt="Nakshatra Pardeshi - The Birth of Bitcoin Blog">
+                <a href="https://medium.com/@nakshatrapardeshi/the-birth-of-bitcoin-fbdd09008fbf" target="_blank">Read - The Birth of Bitcoin Blog</a>
+            </div>
+            <div class="medium-item">
+                <img src="https://miro.medium.com/v2/resize:fit:786/format:webp/1*fSxAi6Rpl9X9sJwPNVOZAw.jpeg" alt="Nakshatra Pardeshi - Bitcoin ETFs in 2024 Blog">
+                <a href="https://medium.com/@nakshatrapardeshi/the-evolution-scope-and-impact-of-bitcoin-etfs-in-2024-ae8874ddebdd" target="_blank">Read - Bitcoin ETFs in 2024 Blog</a>
+            </div>
+        </div>
+        <div class="read-more-container">
+            <p><a href="https://medium.com/@nakshatrapardeshi" class="button-3d" target="_blank">Read more blogs</a></p>
+        </div>
+    </section>
+
+    <section id="portfolio" class="container">
+        <h2>Photography Portfolio</h2>
+        <div class="photography">
+            <img src="images/Nakshatra Pardeshi Portfolio.jpg" alt="Photography Portfolio">
+        </div>
+        <p><a href="portfolio.html" class="button-3d">View my full portfolio</a></p>
+    </section>
+
+    <section id="nft" class="container">
+        <h2>Featured NFTs</h2>
+        <p>Discover my exclusive NFT collection, now available on OpenSea. Each piece is a unique digital masterpiece, reflecting a blend of creativity, innovation, and artistic vision. Explore the intricate details, vibrant colors, and the stories behind each artwork. Don’t miss the opportunity to own a piece of digital art history. Visit my OpenSea profile today and immerse yourself in a world where art meets technology. Your support and appreciation mean the world to me.</p>
+        <div class="nft-container">
+            <div class="nft-item">
+                <img src="https://i.seadn.io/gae/owi1iL47o2fOflDFaHMPIItebBWb43m8H0Dnb19FKZxN3vbRVN91jj4YGRqZjE4TU7wfQu3kiC_iy1s6J0nQto37cijAN3WjDB59FgI?w=500&auto=format" alt="Blackdoc03 - Bacardi NFT">
+                <a href="https://opensea.io/assets/ethereum/0x98ca78e89dd1abe48a53dee5799f24cc1a462f2d/4344" target="_blank">Buy on OpenSea</a>
+            </div>
+            <div class="nft-item">
+                <img src="https://i.seadn.io/gcs/files/d0affb46f87da1046636bba16213bc07.png?auto=format&dpr=1&w=1000" alt="Blackdoc03 - Dhoop NFT">
+                <a href="https://opensea.io/assets/ethereum/0x495f947276749ce646f68ac8c248420045cb7b5e/65224356902702289095962118112054406543795869661573533671583114469255921270785" target="_blank">Buy on OpenSea</a>
+            </div>
+           <div class="nft-item">
+                <img src="https://openseauserdata.com/files/8a61685872be8dfce4978449343e2b9c.svg" alt="Blackdoc03 - WARNERMUSIC NFT">
+                <a href="https://opensea.io/assets/ethereum/0x98ca78e89dd1abe48a53dee5799f24cc1a462f2d/6461" target="_blank">Buy on OpenSea</a>
+            </div>
+            <div class="nft-item">
+                <img src="https://i.seadn.io/gae/e07waj0eWuHiACQNgAGyMzyar7Wj6LJL7ppVlxLDebPIVGtS0ac_s05rRTl2VaEiydj5e00MBFvAEsbvrxg_zTDfBb1F3WEmEKQ-?auto=format&dpr=1&w=384" alt="NFT.com Genesis Key #07573">
+                <a href="https://opensea.io/assets/ethereum/0x8fb5a7894ab461a59acdfab8918335768e411414/7573" target="_blank">Buy on OpenSea</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="container">
+        <h2>Contact</h2>
+        <div class="contact-icons">
+            <a href="mailto:nakshatrapardeshi@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.linkedin.com/in/nakshatrapardeshi/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.instagram.com/nakshatrapardeshi?igsh=MmpuczIxOGpvZHYz&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://youtube.com/@nakshatrapardeshi?si=_8FkcPrBAo-V4BdG" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="tel:+4407407761837"><i class="fas fa-phone"></i></a>
+        </div>
+    </section>
+
+    <div class="games-button-container">
+        <a href="games.html" class="button-3d-games">Play Games</a>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Profile Section -->
-        <section id="profile" class="profile-section">
-            <div class="profile-image">
-                <img src="your-image.png" alt="Your Image">
-            </div>
-            <div class="profile-info">
-                <h2>Hi, I'm [Your Name]</h2>
-                <p>I specialize in [Your Specialization]. Welcome to my personal website where you can learn more about my work and projects.</p>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="projects-section">
-            <h2>My Projects</h2>
-            <div class="project-cards">
-                <div class="project-card">
-                    <h3>Project 1</h3>
-                    <p>A brief description of Project 1.</p>
-                    <button onclick="window.location.href='project1.html'">View Project</button>
-                </div>
-                <div class="project-card">
-                    <h3>Project 2</h3>
-                    <p>A brief description of Project 2.</p>
-                    <button onclick="window.location.href='project2.html'">View Project</button>
-                </div>
-                <!-- Add more project cards as needed -->
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="skills-section">
-            <h2>Skills</h2>
-            <div class="skill-cards">
-                <div class="skill-card">Graphic & Web Design</div>
-                <div class="skill-card">Motion Design</div>
-                <div class="skill-card">Webflow Expert</div>
-                <!-- Add more skills as needed -->
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <p>&copy; [Current Year] [Your Name]. All Rights Reserved.</p>
-        </footer>
+    <footer>
+        <p>&copy; 2024 Nakshatra Pardeshi. All Rights Reserved.</p>
+    </footer>
+    <div class="ticker-box">
+        <span class="crypto"><i class="fab fa-bitcoin"></i> Bitcoin: <span id="btc-price">Loading...</span></span>
+        <span class="crypto"><i class="fab fa-ethereum"></i> Ethereum: <span id="eth-price">Loading...</span></span>
     </div>
+    <script>
+        async function fetchCryptoPrices() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
+                const data = await response.json();
+                document.getElementById('btc-price').textContent = `$${data.bitcoin.usd}`;
+                document.getElementById('eth-price').textContent = `$${data.ethereum.usd}`;
+            } catch (error) {
+                console.error('Error fetching crypto prices:', error);
+            }
+        }
 
+        function updatePrices() {
+            fetchCryptoPrices();
+            setInterval(fetchCryptoPrices, 60000); // Update every 60 seconds
+        }
+
+        window.onload = updatePrices;
+
+        async function fetchNFTs() {
+            const response = await fetch('https://api.opensea.io/api/v1/assets?owner=0x9033ad81fb39b02af261c62abe377dd1658c2017&order_direction=desc&offset=0&limit=10');
+            const data = await response.json();
+            return data.assets;
+        }
+
+        async function displayNFTs() {
+            const nftContainer = document.getElementById('nft-container');
+            const nfts = await fetchNFTs();
+            nfts.forEach(nft => {
+                const nftItem = document.createElement('div');
+                nftItem.className = 'nft-item';
+                nftItem.innerHTML = `
+                    <img src="${nft.image_url}" alt="${nft.name}">
+                    <a href="${nft.permalink}" target="_blank">Buy on OpenSea</a>
+                `;
+                nftContainer.appendChild(nftItem);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', displayNFTs);
+    </script>
 </body>
 </html>
